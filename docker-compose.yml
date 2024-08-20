@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  mysql-account:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: accountManagement
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - mysql_account_data:/var/lib/mysql
+    ports:
+      - "3308:3306"
+
+  mysql-payment:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: paymentManagement
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - mysql_payment_data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+
+  account-manager:
+    build: ./account-manager
+    ports:
+      - "3001:3001"
+    environment:
+      DATABASE_URL: mysql://user:password@mysql-account:3306/accountManagement
+      JWT_SECRET: jwt_secret
+    depends_on:
+      - mysql-account
+
+  payment-manager:
+    build: ./payment-manager
+    ports:
+      - "3002:3002"
+    environment:
+      DATABASE_URL: mysql://user:password@mysql-payment:3306/paymentManagement
+    depends_on:
+      - mysql-payment
+
+volumes:
+  mysql_account_data:
+  mysql_payment_data:

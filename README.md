@@ -1,59 +1,92 @@
-# Take home assignment
+Backend Service
+Overview
+This project is a backend service for managing user accounts and transactions. It includes two main components:
 
+Account Manager: Manages user accounts and authentication.
+Payment Manager: Handles transactions and payment-related functionalities.
+Technologies Used
+Node.js: JavaScript runtime for server-side logic.
+Fastify: Web framework for building APIs.
+MySQL: Relational database for storing data.
+Prisma: ORM for database access.
+Docker: Containerization for consistent development and deployment environments.
+Setup
+Environment Variables
+Create a .env file in the root directory of the project with the following content:
 
-## Description:
-Build 2 Backend services which manages user’s accounts and transactions (send/withdraw). 
+env
+Copy code
+DATABASE_URL="mysql://user:password@localhost:3306/paymentManagement?schema=public"
+JWT_SECRET=your_jwt_secret_key
+Replace user, password, localhost, and paymentManagement with your MySQL credentials and database details.
 
-In Account Manager service, we have:
-- User: Login with Id/Password
-- Payment Account: One user can have multiple accounts like credit, debit, loan...
-- Payment History: Records of transactions
+Running Locally
+Install Dependencies
 
-In Payment Manager service, we have:
-- Transaction: Include basic information like amount, timestamp, toAddress, status...
-- We have a core transaction process function, that will be executed by `/send` or `/withdraw` API:
+Navigate to the project root directory and install dependencies:
 
-```js
-function processTransaction(transaction) {
-    return new Promise((resolve, reject) => {
-        console.log('Transaction processing started for:', transaction);
+bash
+Copy code
+npm install
+Run Database Migrations
 
-        // Simulate long running process
-        setTimeout(() => {
-            // After 30 seconds, we assume the transaction is processed successfully
-            console.log('transaction processed for:', transaction);
-            resolve(transaction);
-        }, 30000); // 30 seconds
-    });
-}
+Ensure your MySQL database is up and running. Apply migrations using Prisma:
 
-// Example usage
-let transaction = { amount: 100, currency: 'USD' }; // Sample transaction input
-processTransaction(transaction)
-    .then((processedTransaction) => {
-        console.log('transaction processing completed for:', processedTransaction);
-    })
-    .catch((error) => {
-        console.error('transaction processing failed:', error);
-    });
-```
+bash
+Copy code
+npx prisma migrate deploy
+Start the Server
 
-Features:
-- Users need to register/log in and then be able to call APIs.
-- APIs for 2 operations send/withdraw. Account statements will be updated after the transaction is successful.
-- APIs to retrieve all accounts and transactions per account of the user.
-- Write Swagger docs for implemented APIs (Optional)
-- Auto Debit/Recurring Payments: Users should be able to set up recurring payments. These payments will automatically be processed at specified intervals. (Optional)
+Start the backend services using Docker Compose:
 
-### Tech-stack:
-- Recommend using authentication 3rd party: Supertokens, Supabase...
-- `NodeJs` for API server (`Fastify/Gin` framework is the best choices)
-- `PostgreSQL/MongoDB` for Database. Recommend using `Prisma` for ORM.
-- `Docker` for containerization. Recommend using `docker-compose` for running containers.
- 
-## Target:
-- Good document/README to describe your implementation.
-- Make sure app functionality works as expected. Run and test it well.
-- Containerized and run the app using Docker.
-- Using `docker-compose` or any automation script to run the app with single command is a plus.
-- Job schedulers utilization is a plus
+bash
+Copy code
+docker-compose up
+The backend services will be available at:
+
+Account Manager: http://localhost:3001
+Payment Manager: http://localhost:3002
+Testing the Service
+You can test the endpoints using tools like Postman or curl. Here are some example requests:
+
+Register a User
+
+bash
+Copy code
+curl -X POST http://localhost:3001/register -H "Content-Type: application/json" -d '{"email": "user@example.com", "password": "yourpassword"}'
+Login a User
+
+bash
+Copy code
+curl -X POST http://localhost:3001/login -H "Content-Type: application/json" -d '{"email": "user@example.com", "password": "yourpassword"}'
+Create a Transaction
+
+bash
+Copy code
+curl -X POST http://localhost:3002/transactions -H "Content-Type: application/json" -H "Authorization: Bearer YOUR_JWT_TOKEN" -d '{"amount": 100, "description": "Payment for service"}'
+Docker Commands
+Build and Start Containers
+
+bash
+Copy code
+docker-compose up --build
+Stop Containers
+
+bash
+Copy code
+docker-compose down
+Troubleshooting
+If you encounter issues with connecting to the MySQL database:
+
+Check MySQL Container Logs
+
+bash
+Copy code
+docker logs <mysql-container-id>
+Verify Database Credentials
+
+Ensure that the credentials in your .env file match those used by the MySQL container.
+
+Inspect Network Configuration
+
+Ensure that your containers are on the same network and can communicate with each other.
