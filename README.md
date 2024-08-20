@@ -6,12 +6,16 @@ This project is a backend service for managing user accounts and transactions. I
 Account Manager: Manages user accounts and authentication.
 Payment Manager: Handles transactions and payment-related functionalities.
 
+
+
 **Technologies Used**
 Node.js: JavaScript runtime for server-side logic.
 Fastify: Web framework for building APIs.
 MySQL: Relational database for storing data.
 Prisma: ORM for database access.
 Docker: Containerization for consistent development and deployment environments.
+
+
 
 **Setup**
 Environment Variables
@@ -24,18 +28,22 @@ JWT_SECRET=your_jwt_secret_key
 
 Replace user, password, localhost, and paymentManagement with your MySQL credentials and database details.
 
-Running Locally
-Install Dependencies
+
+
+**Running Locally**
+**Install Dependencies**
 
 **Navigate to the project root directory and install dependencies:**
 
 npm install
 Run Database Migrations
 
+
 **Ensure your MySQL database is up and running. Apply migrations using Prisma:**
 
 npx prisma migrate deploy
 Start the Server
+
 
 **Start the backend services using Docker Compose:**
 
@@ -44,6 +52,8 @@ The backend services will be available at:
 
 Account Manager: http://localhost:3001
 Payment Manager: http://localhost:3002
+
+
 
 **Testing the Service**
 You can test the endpoints using tools like Postman or curl. Here are some example requests:
@@ -69,6 +79,8 @@ Stop Containers
 docker-compose down
 Troubleshooting
 If you encounter issues with connecting to the MySQL database:
+
+
 
 **Check MySQL Container Logs**
 
