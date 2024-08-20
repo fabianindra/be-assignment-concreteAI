@@ -1,88 +1,77 @@
-Backend Service
-Overview
+**Backend Service
+Overview**
 
 This project is a backend service for managing user accounts and transactions. It includes two main components:
 
 Account Manager: Manages user accounts and authentication.
 Payment Manager: Handles transactions and payment-related functionalities.
-Technologies Used
+
+**Technologies Used**
 Node.js: JavaScript runtime for server-side logic.
 Fastify: Web framework for building APIs.
 MySQL: Relational database for storing data.
 Prisma: ORM for database access.
 Docker: Containerization for consistent development and deployment environments.
-Setup
+
+**Setup**
 Environment Variables
 Create a .env file in the root directory of the project with the following content:
 
-env
-Copy code
+env :
+
 DATABASE_URL="mysql://user:password@localhost:3306/paymentManagement?schema=public"
 JWT_SECRET=your_jwt_secret_key
+
 Replace user, password, localhost, and paymentManagement with your MySQL credentials and database details.
 
 Running Locally
 Install Dependencies
 
-Navigate to the project root directory and install dependencies:
+**Navigate to the project root directory and install dependencies:**
 
-bash
-Copy code
 npm install
 Run Database Migrations
 
-Ensure your MySQL database is up and running. Apply migrations using Prisma:
+**Ensure your MySQL database is up and running. Apply migrations using Prisma:**
 
-bash
-Copy code
 npx prisma migrate deploy
 Start the Server
 
-Start the backend services using Docker Compose:
+**Start the backend services using Docker Compose:**
 
-bash
-Copy code
 docker-compose up
 The backend services will be available at:
 
 Account Manager: http://localhost:3001
 Payment Manager: http://localhost:3002
-Testing the Service
+
+**Testing the Service**
 You can test the endpoints using tools like Postman or curl. Here are some example requests:
 
-Register a User
+**Register a User
+**
 
-bash
-Copy code
 curl -X POST http://localhost:3001/register -H "Content-Type: application/json" -d '{"email": "user@example.com", "password": "yourpassword"}'
 Login a User
 
-bash
-Copy code
+
 curl -X POST http://localhost:3001/login -H "Content-Type: application/json" -d '{"email": "user@example.com", "password": "yourpassword"}'
 Create a Transaction
 
-bash
-Copy code
+
 curl -X POST http://localhost:3002/transactions -H "Content-Type: application/json" -H "Authorization: Bearer YOUR_JWT_TOKEN" -d '{"amount": 100, "description": "Payment for service"}'
 Docker Commands
 Build and Start Containers
 
-bash
-Copy code
 docker-compose up --build
 Stop Containers
 
-bash
-Copy code
 docker-compose down
 Troubleshooting
 If you encounter issues with connecting to the MySQL database:
 
-Check MySQL Container Logs
+**Check MySQL Container Logs**
 
-bash
-Copy code
 docker logs <mysql-container-id>
 Verify Database Credentials
 
